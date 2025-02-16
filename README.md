@@ -120,7 +120,16 @@ docker build -t chatml-api .
 docker-compose up -d
 ```
 
-📌 The API will be available at: **`http://localhost:8000`**
+📌 The API will be available at: **`http://chatkg-api.localhost/`**
+📌 The Traekik dashboard will be available at: **`http://localhost:8080/`**
+
+![image](https://github.com/user-attachments/assets/b5c031ee-55c0-4fa0-b431-6d73fe810b78)
+
+![image](https://github.com/user-attachments/assets/145a207e-dec6-4ceb-a9c3-31de3fb96168)
+
+
+
+
 
 > [!NOTE]
 > The AIO Docker compose will run the FastAPI, PostgreSQL, MongoDB, and Redis services using default environment variables.
