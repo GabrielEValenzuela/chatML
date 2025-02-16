@@ -1,6 +1,12 @@
-fastapi==0.95.2
-uvicorn==0.22.0
-pydantic==1.10.7
-redis==4.5.1
+fastapi==0.115.8
+uvicorn==0.34.0
+gunicorn==23.0.0
+pyjwt==2.10.1
+pydantic==2.10.6
+passlib==1.7.4
 python-dotenv==1.0.0
-loguru==0.6.0
+redis==5.2.1
+pymongo==4.11.1
+psycopg2-binary==2.9.10
+pykeen==1.11.0
+email_validator==2.2.0
