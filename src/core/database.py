@@ -110,7 +110,10 @@ def insert_api_key_in_db(user_email: str) -> Tuple[str, str]:
                         f"Account type: {account_type}"
                     )
                     return (row[0], account_type)
-                return ""
+                else:
+                    logger.error(
+                        f"Error inserting API key in DB. No row returned.")
+                    return ("", "")
     except Exception as e:
         logger.error(f"Error inserting API key in DB: {e}")
         return ""
