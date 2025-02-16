@@ -27,5 +27,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Fix Dockerfile and add Traefick ([#42](https://github.com/GabrielEValenzuela/chatML/pull/42))
 - Improve README ([#43](https://github.com/GabrielEValenzuela/chatML/pull/43))
+- Add CHANGELOG.md ([#44](https://github.com/GabrielEValenzuela/chatML/pull/44))
 
 ### Removed
