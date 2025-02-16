@@ -121,6 +121,7 @@ docker-compose up -d
 ```
 
 📌 The API will be available at: **`http://chatkg-api.localhost/`**
+
 📌 The Traekik dashboard will be available at: **`http://localhost:8080/`**
 
 ![image](https://github.com/user-attachments/assets/b5c031ee-55c0-4fa0-b431-6d73fe810b78)

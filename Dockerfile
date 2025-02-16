@@ -1,30 +1,55 @@
 # syntax=docker/dockerfile:1
 
-FROM python:3.10-slim AS base
+##################################################
+# 1️⃣ Builder Stage
+##################################################
+FROM python:3.10-slim AS builder
 
-# Prevent Python from writing .pyc files, and force stdout/stderr to be unbuffered
-ENV PYTHONDONTWRITEBYTECODE=1
-ENV PYTHONUNBUFFERED=1
+# Create a virtual environment path
+ENV VENV_PATH=/venv
+RUN python -m venv $VENV_PATH
+
+# Activate venv by default
+ENV PATH="$VENV_PATH/bin:$PATH"
 
 WORKDIR /app
 
-# Install system deps needed (e.g. gcc) if you run into build issues
+# Install system dependencies needed only for building
 RUN apt-get update && apt-get install -y --no-install-recommends \
-    build-essential iputils-ping neovim && \
+    build-essential && \
     rm -rf /var/lib/apt/lists/*
 
-# Copy in requirements first for caching
+# Copy requirements
 COPY requirements.txt .
 
-# Install Python dependencies
+# Install Python dependencies in the venv
 RUN pip install --upgrade pip && pip install --no-cache-dir -r requirements.txt
 
-# Copy your entire project
+# Copy the entire project
 COPY . .
+
+##################################################
+# 2️⃣ Final Stage
+##################################################
+FROM python:3.10-slim AS final
+
+# Create a user to avoid running as root
+RUN useradd -m appuser
+
+# Copy the virtual environment from builder
+COPY --from=builder /venv /venv
+ENV PATH="/venv/bin:$PATH"
+
+WORKDIR /app
+
+# Copy the application source code from the builder
+COPY --from=builder /app /app
 
 # Expose the application port
 EXPOSE 8000
 
-# Gunicorn + Uvicorn workers for concurrency
-# Adjust `-w 4` (number of workers) based on CPU cores
+# Switch to non-root user
+USER appuser
+
+# Run Gunicorn + Uvicorn
 CMD ["gunicorn", "src.api.main:app", "-w", "4", "-k", "uvicorn.workers.UvicornWorker", "--bind", "0.0.0.0:8000"]
