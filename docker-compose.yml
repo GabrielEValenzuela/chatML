@@ -1,0 +1,56 @@
+version: "3.8"
+services:
+  fastapi_app:
+    build: .
+    container_name: ml_fastapi_app
+    restart: always
+    environment:
+      - POSTGRES_HOST:postgres_fastapi
+        POSTGRES_PORT=5432
+        POSTGRES_DB=api_db
+        POSTGRES_USER=api_user
+        POSTGRES_PASSWORD=api_password
+        MONGO_URI=mongodb://api_user:api_password@mongodb_fastapi:27017/api_user_db
+        REDIS_URI=redis://redis_fastapi:6379
+        SECRET_KEY=supersecretkey # JWT Secret (Only for development purposes) NEVER USE THIS IN PRODUCTION!
+    ports:
+      - "8080:8000"
+    depends_on:
+      - postgres
+      - mongodb
+      - redis
+    
+
+  postgres:
+    image: postgres:17-alpine3.20
+    container_name: postgres_fastapi
+    restart: always
+    environment:
+      POSTGRES_USER: docker-postgres-user
+      POSTGRES_PASSWORD: docker-postgres-password
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./init-scripts/postgres-init.sh:/docker-entrypoint-initdb.d/init.sh
+    command: ["postgres"]
+
+  mongodb:
+    image: mongo:8.0.5-rc2
+    container_name: mongodb_fastapi
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: docker-mongo_user
+      MONGO_INITDB_ROOT_PASSWORD: docker-mongo_password
+      MONGO_INITDB_DATABASE: docker-_mongo_db
+    volumes:
+      - mongodb_data:/data/db
+      - ./init-scripts/mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js
+    command: ["mongod", "--auth"]
+
+  redis:
+    image: redis:latest
+    container_name: redis_fastapi
+    restart: always
+
+volumes:
+  postgres_data:
+  mongodb_data:
