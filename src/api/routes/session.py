@@ -49,6 +49,11 @@ async def register_user(req_data: RegisterRequest):
 
     If the user already exists, return a 400 Bad Request error.
     """
+    if not req_data.email or not req_data.password or req_data.email == "" or req_data.password == "":
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Email and password are required."
+        )
 
     hashed_pw = pwd_context.hash(req_data.password)
 
