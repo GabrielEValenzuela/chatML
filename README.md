@@ -141,8 +141,8 @@ docker-compose up -d
 
 💡 **Example: User Creation and Login**
 
-> [!NOTE]
-> For now, the current approach create users with PREMIUM access if email end in `@gmail.com`
+> [!NOTE]  
+> For now, the current approach creates users with PREMIUM access if the email ends in `@gmail.com`.
 
 **Endpoint:**
 
@@ -159,7 +159,7 @@ POST /register
 }
 ```
 
-Once user is registred, you can login
+Once the user is registered, you can log in.
 
 **Endpoint:**
 
