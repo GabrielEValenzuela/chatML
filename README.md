@@ -139,6 +139,43 @@ docker-compose up -d
 
 ## 📡 API Usage
 
+💡 **Example: User Creation and Login**
+
+> [!NOTE]
+> For now, the current approach create users with PREMIUM access if email end in `@gmail.com`
+
+**Endpoint:**
+
+```http
+POST /register
+```
+
+**Request:**
+
+```http
+{
+  "email": <EMAIL>,
+  "password": <PASSWORD>
+}
+```
+
+Once user is registred, you can login
+
+**Endpoint:**
+
+```http
+POST /login
+```
+
+**Request:**
+
+```http
+{
+  "email": <EMAIL>,
+  "password": <PASSWORD>
+}
+```
+
 💡 **Example: Get Similar Entities**
 
 **Endpoint:**
