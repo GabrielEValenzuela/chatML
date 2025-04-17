@@ -158,8 +158,18 @@ curl -X POST http://chatkg-api.localhost/register \
     "password": "yourStrongPassword"
 }'
 ```
-
 > 🔁 Replace `"yourname@gmail.com"` and `"yourStrongPassword"` with your actual email and password.
+
+**Responsee example:**
+
+```json
+{
+  "account_type": "PREMIUM",
+  "api_key": "d234...",
+  "message": "User registered successfully. Copy your API Key and keep it safe! IT WONT'T BE SHOWN AGAIN.",
+  "token": null
+}
+```
 
 ---
 
@@ -178,14 +188,18 @@ curl -X POST  http://chatkg-api.localhost/login \
 }'
 ```
 
-> The response will include something like this:
-> ```json
-> {
->   "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
-> }
-> ```
+**Responsee example:**
 
-✅ That `access_token` **is your JWT key**. Use it in the next step.
+```json
+{
+  "account_type": null,
+  "api_key": null,
+  "message": "Welcome back!",
+  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+}
+```
+
+✅ That `token` **is your JWT**. Use it in the next step.
 
 ---
 
@@ -196,7 +210,7 @@ Here’s how to use your JWT in the `Authorization` header instead of in the bod
 ### With a URL-style entity:
 
 ```bash
-curl -X POST http://localhost:8000/service \
+curl -X POST http://chatkg-api.localhost/service \
   -H "Content-Type: application/json" \
   -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..." \
   -d '{
@@ -207,7 +221,7 @@ curl -X POST http://localhost:8000/service \
 ### With a numeric ID:
 
 ```bash
-curl -X POST http://localhost:8000/service \
+curl -X POST http://chatkg-api.localhost/service \
   -H "Content-Type: application/json" \
   -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..." \
   -d '{
