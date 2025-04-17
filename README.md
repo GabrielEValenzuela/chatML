@@ -121,6 +121,7 @@ docker-compose up -d
 ```
 
 📌 The API will be available at: **`http://chatkg-api.localhost/`**
+
 📌 The Traekik dashboard will be available at: **`http://localhost:8080/`**
 
 ![image](https://github.com/user-attachments/assets/b5c031ee-55c0-4fa0-b431-6d73fe810b78)
@@ -139,66 +140,82 @@ docker-compose up -d
 
 ## 📡 API Usage
 
-💡 **Example: User Creation and Login**
+Once you have the AIO running, you can access to differents endpoints.
 
-> [!NOTE]  
-> For now, the current approach creates users with PREMIUM access if the email ends in `@gmail.com`.
+## Register a User
 
-**Endpoint:**
+This creates a new account.
 
-```http
-POST /register
+> ✅ If your email ends with `@gmail.com`, you'll get **PREMIUM** access.
+
+### Example curl:
+
+```bash
+curl -X POST http://chatkg-api.localhost/register \
+  -H "Content-Type: application/json" \
+  -d '{
+    "email": "yourname@gmail.com",
+    "password": "yourStrongPassword"
+}'
 ```
 
-**Request:**
+> 🔁 Replace `"yourname@gmail.com"` and `"yourStrongPassword"` with your actual email and password.
 
-```http
-{
-  "email": <EMAIL>,
-  "password": <PASSWORD>
-}
+---
+
+## Login
+
+Once you're registered, use the same email + password to get your **JWT Token** (you’ll need it later).
+
+### Example curl:
+
+```bash
+curl -X POST  http://chatkg-api.localhost/login \
+  -H "Content-Type: application/json" \
+  -d '{
+    "email": "yourname@gmail.com",
+    "password": "yourStrongPassword"
+}'
 ```
 
-Once the user is registered, you can log in.
+> The response will include something like this:
+> ```json
+> {
+>   "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+> }
+> ```
 
-**Endpoint:**
+✅ That `access_token` **is your JWT key**. Use it in the next step.
 
-```http
-POST /login
+---
+
+## Get similar entities
+
+Here’s how to use your JWT in the `Authorization` header instead of in the body.
+
+### With a URL-style entity:
+
+```bash
+curl -X POST http://localhost:8000/service \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..." \
+  -d '{
+    "entity_input": "https://raw.githubusercontent.com/jwackito/csv2pronto/main/ontology/pronto.owl#space_site3_50561744"
+}'
 ```
 
-**Request:**
+### With a numeric ID:
 
-```http
-{
-  "email": <EMAIL>,
-  "password": <PASSWORD>
-}
+```bash
+curl -X POST http://localhost:8000/service \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..." \
+  -d '{
+    "entity_input": 106110
+}'
 ```
 
-💡 **Example: Get Similar Entities**
-
-**Endpoint:**
-
-```http
-POST /service
-```
-
-**Request:**
-
-```http
-{
-  "api_key": <API_KEY>,
-  "entity_input": "https://raw.githubusercontent.com/jwackito/csv2pronto/main/ontology/pronto.owl#space_site3_50561744"
-}
-```
-
-```http
-{
-  "api_key": <API_KEY>,
-  "entity_input": 106110
-}
-```
+> 🔁 Replace the long `eyJ...` token with the actual `access_token` from the login response.
 
 **Response:**
 
